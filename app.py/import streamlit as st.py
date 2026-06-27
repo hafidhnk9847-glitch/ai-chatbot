@@ -1,0 +1,31 @@
+import streamlit as st
+import ollama
+
+st.title("My AI Chatbot")
+
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+for msg in st.session_state.messages:
+    with st.chat_message(msg["role"]):
+        st.write(msg["content"])
+
+user_input = st.chat_input("Type your message...")
+
+if user_input is not None:
+    st.session_state.messages.append(
+        {"role": "user", "content": user_input}
+    )
+
+    response = ollama.chat(
+        model="gemma:2b",
+        messages=st.session_state.messages
+    )
+
+    reply = response["message"]["content"]
+
+    st.session_state.messages.append(
+        {"role": "assistant", "content": reply}
+    )
+
+    st.rerun()
