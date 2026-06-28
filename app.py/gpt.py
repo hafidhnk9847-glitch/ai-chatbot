@@ -1,7 +1,7 @@
 import streamlit as st
 from groq import Groq
 
-client = Groq(api_key="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")
+client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 
 st.set_page_config(page_title="My AI Chatbot", page_icon="🤖", layout="centered")
 st.title("My AI Chatbot")
@@ -30,3 +30,4 @@ if user_input:
     reply = response.choices[0].message.content
     st.session_state.messages.append({"role": "assistant", "content": reply})
     st.rerun()
+
